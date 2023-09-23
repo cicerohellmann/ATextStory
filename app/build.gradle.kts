@@ -1,8 +1,15 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("org.jetbrains.kotlin.plugin.serialization") version "1.6.0"
 }
+
+val properties = Properties().apply {
+    load(project.rootProject.file("local.properties").inputStream())
+}
+val apiKey = properties.getProperty("apiKey") ?: "defaultApiKey"
 
 android {
     namespace = "com.hellmann.atextstory"
@@ -23,11 +30,17 @@ android {
 
     buildTypes {
         release {
+            android.buildFeatures.buildConfig = true
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            android.buildFeatures.buildConfig = true
+            buildConfigField("String", "API_KEY", "\"$apiKey\"")
         }
     }
     compileOptions {
