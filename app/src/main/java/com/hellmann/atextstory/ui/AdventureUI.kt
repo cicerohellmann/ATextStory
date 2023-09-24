@@ -18,11 +18,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
-import com.hellmann.atextstory.client.systemDefinition
 import com.hellmann.atextstory.client.getStoryThemes
+import com.hellmann.atextstory.client.systemDefinition
 import com.hellmann.atextstory.data.Message
 import com.hellmann.atextstory.data.ScenarioData
+import com.hellmann.atextstory.ui.Size.medium
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -63,7 +63,7 @@ fun AdventureUI(pickedTheme: String) {
         }
     }
 
-    LazyColumn(modifier = Modifier.padding(16.dp)) {
+    LazyColumn(modifier = Modifier.padding(medium)) {
         item {
             Text(currentStory.scenario)
         }
