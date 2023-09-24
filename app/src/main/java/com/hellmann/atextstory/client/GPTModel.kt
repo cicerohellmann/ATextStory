@@ -1,4 +1,4 @@
-package com.hellmann.atextstory
+package com.hellmann.atextstory.client
 
 object GPTModel {
     val gpt_3_5_turbo = "gpt-3.5-turbo"

@@ -1,7 +1,6 @@
 package com.hellmann.atextstory.data
 
-import com.hellmann.atextstory.GPTModel
-import com.hellmann.atextstory.data.Message
+import com.hellmann.atextstory.client.GPTModel
 import kotlinx.serialization.Serializable
 
 @Serializable
