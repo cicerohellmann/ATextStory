@@ -60,6 +60,12 @@ fun AdventureUI(pickedTheme: String) {
     LaunchedEffect(key1 = Unit) {
         scope.launch {
             currentStory = getStoryThemes(storyLine)
+            storyLine.add(
+                Message(
+                    role = "assistant",
+                    content = currentStory.scenario
+                )
+            )
         }
     }
 
@@ -78,7 +84,12 @@ fun AdventureUI(pickedTheme: String) {
                         )
                     )
                     currentStory = getStoryThemes(messages = storyLine)
-
+                    storyLine.add(
+                        Message(
+                            role = "assistant",
+                            content = currentStory.scenario
+                        )
+                    )
                 }
             }) {
                 Text(it)
