@@ -1,9 +1,6 @@
 package com.hellmann.atextstory.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
@@ -14,14 +11,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import com.hellmann.atextstory.client.getStoryThemes
 import com.hellmann.atextstory.client.initialUserMessage
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
 import com.hellmann.atextstory.data.ScenarioData
 import com.hellmann.atextstory.ui.theme.AdventureButton
+import com.hellmann.atextstory.ui.theme.AdventureLazyColumn
 import com.hellmann.atextstory.ui.theme.AdventureText
 import com.hellmann.atextstory.ui.theme.AdventureTextField
 import com.hellmann.atextstory.ui.theme.LocalSpacer
