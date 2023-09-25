@@ -11,3 +11,4 @@ Working out of the box with Android Studio Giraffe | 2022.3.1 Patch 1
 4. Long term memory
 5. Engaging with the software (function calling)
 6. Conversation Compression
+7. Graphs
