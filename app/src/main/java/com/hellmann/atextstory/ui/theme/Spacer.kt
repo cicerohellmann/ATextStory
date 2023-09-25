@@ -1,4 +1,4 @@
-package com.hellmann.atextstory.ui
+package com.hellmann.atextstory.ui.theme
 
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.size
