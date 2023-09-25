@@ -8,7 +8,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.hellmann.atextstory.ui.AdventureUI
+import com.hellmann.atextstory.ui.Adventure
 import com.hellmann.atextstory.ui.ThemePicking
 
 class MainActivity : ComponentActivity() {
@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
                     pickedTheme = it
                 }
 
-                else -> AdventureUI(pickedTheme)
+                else -> Adventure(pickedTheme)
             }
         }
     }

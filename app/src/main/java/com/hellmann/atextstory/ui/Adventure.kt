@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun AdventureUI(pickedTheme: String) {
+fun Adventure(pickedTheme: String) {
     val scope = rememberCoroutineScope()
 
     val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
