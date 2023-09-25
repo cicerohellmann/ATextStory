@@ -45,6 +45,7 @@ fun AdventureUI(pickedTheme: String) {
     LaunchedEffect(key1 = Unit) {
         scope.launch {
             currentStory = postChatGPT(storyLine)
+            storyLine.add(Message(role = "assistant", content = currentStory.scenario))
         }
     }
 
@@ -61,6 +62,7 @@ fun AdventureUI(pickedTheme: String) {
                 scope.launch {
                     storyLine.add(Message(role = "user", content = option))
                     currentStory = postChatGPT(storyLine)
+                    storyLine.add(Message(role = "assistant", content = currentStory.scenario))
                 }
             }
         }
@@ -74,6 +76,7 @@ fun AdventureUI(pickedTheme: String) {
                     scope.launch {
                         storyLine.add(Message(role = "user", content = freeOption))
                         currentStory = postChatGPT(storyLine)
+                        storyLine.add(Message(role = "assistant", content = currentStory.scenario))
                     }
                 }
             )
