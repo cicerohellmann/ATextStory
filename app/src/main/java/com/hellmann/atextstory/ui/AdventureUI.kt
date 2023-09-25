@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.hellmann.atextstory.client.getStoryThemes
+import com.hellmann.atextstory.client.postChatGPT
 import com.hellmann.atextstory.client.initialUserMessage
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
@@ -44,7 +44,7 @@ fun AdventureUI(pickedTheme: String) {
 
     LaunchedEffect(key1 = Unit) {
         scope.launch {
-            currentStory = getStoryThemes(storyLine)
+            currentStory = postChatGPT(storyLine)
         }
     }
 
@@ -60,7 +60,7 @@ fun AdventureUI(pickedTheme: String) {
             AdventureButton(text = option) {
                 scope.launch {
                     storyLine.add(Message(role = "user", content = option))
-                    currentStory = getStoryThemes(storyLine)
+                    currentStory = postChatGPT(storyLine)
                 }
             }
         }
@@ -73,7 +73,7 @@ fun AdventureUI(pickedTheme: String) {
                 onSend = {
                     scope.launch {
                         storyLine.add(Message(role = "user", content = freeOption))
-                        currentStory = getStoryThemes(storyLine)
+                        currentStory = postChatGPT(storyLine)
                     }
                 }
             )

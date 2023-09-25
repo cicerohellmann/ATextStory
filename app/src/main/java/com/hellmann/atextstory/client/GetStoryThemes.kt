@@ -11,13 +11,12 @@ import io.ktor.client.call.body
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
-import io.ktor.client.statement.bodyAsText
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
-suspend fun getStoryThemes(messages: List<Message>): ScenarioData {
+suspend fun postChatGPT(messages: List<Message>): ScenarioData {
     val response = httpClient.post(
         urlString = path
     ) {
@@ -27,12 +26,13 @@ suspend fun getStoryThemes(messages: List<Message>): ScenarioData {
     val decodedResponse: Message?
     val decodedJson: OpenAIResponse = json.decodeFromString<OpenAIResponse>(response.body())
 
+//    TODO(Review the JSON validation)
     return if (decodedJson.choices.first().message.content.isValidJson()) {
         decodedResponse = decodedJson.choices.first().message
         val cleanedJson = decodedResponse.content.replace(toJSONCleaner, "")
         json.decodeFromString(cleanedJson)
     } else {
-        getStoryThemes(
+        postChatGPT(
             messages + Message(
                 role = "user",
                 content = "You answered it out of format, I need it in unformatted JSON, please"
