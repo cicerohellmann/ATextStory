@@ -11,6 +11,10 @@ import io.ktor.client.call.body
 import io.ktor.client.request.header
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
+import io.ktor.client.statement.bodyAsText
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
 suspend fun getStoryThemes(messages: List<Message>): ScenarioData {
@@ -20,11 +24,29 @@ suspend fun getStoryThemes(messages: List<Message>): ScenarioData {
         header("Authorization", bearer)
         setBody(json.encodeToJsonElement(OpenAIRequest(messages = messages)))
     }
-    println(response)
-    val realResponse =
-        json.decodeFromString<OpenAIResponse>(response.body()).choices.first().message
+    val decodedResponse: Message?
+    val decodedJson: OpenAIResponse = json.decodeFromString<OpenAIResponse>(response.body())
 
-    val cleanedJson = realResponse.content.replace(toJSONCleaner, "")
+    return if (decodedJson.choices.first().message.content.isValidJson()) {
+        decodedResponse = decodedJson.choices.first().message
+        val cleanedJson = decodedResponse.content.replace(toJSONCleaner, "")
+        json.decodeFromString(cleanedJson)
+    } else {
+        getStoryThemes(
+            messages + Message(
+                role = "user",
+                content = "You answered it out of format, I need it in unformatted JSON, please"
+            )
+        )
+    }
+}
 
-    return json.decodeFromString(cleanedJson)
+
+fun String.isValidJson(): Boolean {
+    return try {
+        Json.decodeFromString<JsonElement>(this)
+        true
+    } catch (e: SerializationException) {
+        false
+    }
 }
