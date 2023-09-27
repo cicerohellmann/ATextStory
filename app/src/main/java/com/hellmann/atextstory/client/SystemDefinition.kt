@@ -18,8 +18,6 @@ fun systemDefinition(theme: String): String {
    
         the JSON must be unformatted, please.
         
-        Generate the adventure.
-        
     """.trimIndent().filterNot { it == '\n' || it == '\r' }
 }
 

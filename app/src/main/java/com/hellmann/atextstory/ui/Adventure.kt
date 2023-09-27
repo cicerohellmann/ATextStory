@@ -12,6 +12,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import com.hellmann.atextstory.client.postChatCompletion
+import com.hellmann.atextstory.client.initialUserMessage
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
 import com.hellmann.atextstory.data.ScenarioData
@@ -29,7 +30,7 @@ import kotlinx.coroutines.launch
 fun Adventure(pickedTheme: String) {
     val scope = rememberCoroutineScope()
 
-    val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme)) }
+    val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
 
     var freeOption by remember { mutableStateOf("") }
     var currentStory by remember {
