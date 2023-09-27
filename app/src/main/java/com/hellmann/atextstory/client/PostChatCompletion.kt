@@ -16,7 +16,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.encodeToJsonElement
 
-suspend fun postChatGPT(messages: List<Message>): ScenarioData {
+suspend fun postChatCompletion(messages: List<Message>): ScenarioData {
     val response = httpClient.post(
         urlString = path
     ) {
@@ -32,7 +32,7 @@ suspend fun postChatGPT(messages: List<Message>): ScenarioData {
         val cleanedJson = decodedResponse.content.replace(toJSONCleaner, "")
         json.decodeFromString(cleanedJson)
     } else {
-        postChatGPT(
+        postChatCompletion(
             messages + Message(
                 role = "user",
                 content = "You answered it out of format, I need it in unformatted JSON, please"

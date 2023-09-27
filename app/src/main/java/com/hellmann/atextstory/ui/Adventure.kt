@@ -11,8 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.hellmann.atextstory.client.postChatGPT
-import com.hellmann.atextstory.client.initialUserMessage
+import com.hellmann.atextstory.client.postChatCompletion
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
 import com.hellmann.atextstory.data.ScenarioData
@@ -30,7 +29,7 @@ import kotlinx.coroutines.launch
 fun Adventure(pickedTheme: String) {
     val scope = rememberCoroutineScope()
 
-    val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
+    val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme)) }
 
     var freeOption by remember { mutableStateOf("") }
     var currentStory by remember {
@@ -42,9 +41,13 @@ fun Adventure(pickedTheme: String) {
         )
     }
 
+    LaunchedEffect(currentStory){
+        freeOption = ""
+    }
+
     LaunchedEffect(key1 = Unit) {
         scope.launch {
-            currentStory = postChatGPT(storyLine)
+            currentStory = postChatCompletion(storyLine)
             storyLine.add(Message(role = "assistant", content = currentStory.scenario))
         }
     }
@@ -61,7 +64,7 @@ fun Adventure(pickedTheme: String) {
             AdventureButton(text = option) {
                 scope.launch {
                     storyLine.add(Message(role = "user", content = option))
-                    currentStory = postChatGPT(storyLine)
+                    currentStory = postChatCompletion(storyLine)
                     storyLine.add(Message(role = "assistant", content = currentStory.scenario))
                 }
             }
@@ -75,7 +78,7 @@ fun Adventure(pickedTheme: String) {
                 onSend = {
                     scope.launch {
                         storyLine.add(Message(role = "user", content = freeOption))
-                        currentStory = postChatGPT(storyLine)
+                        currentStory = postChatCompletion(storyLine)
                         storyLine.add(Message(role = "assistant", content = currentStory.scenario))
                     }
                 }
