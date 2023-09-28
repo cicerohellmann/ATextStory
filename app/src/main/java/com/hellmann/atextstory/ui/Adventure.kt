@@ -11,8 +11,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import com.hellmann.atextstory.client.postChatCompletion
 import com.hellmann.atextstory.client.initialUserMessage
+import com.hellmann.atextstory.client.postChatCompletion
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
 import com.hellmann.atextstory.data.ScenarioData
