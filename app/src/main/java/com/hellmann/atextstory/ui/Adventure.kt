@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun Adventure(pickedTheme: String) {
+fun Adventure(pickedTheme: String, onRestart: (String) -> Unit) {
     val scope = rememberCoroutineScope()
 
     val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
@@ -43,7 +43,7 @@ fun Adventure(pickedTheme: String) {
         )
     }
 
-    LaunchedEffect(currentStory){
+    LaunchedEffect(currentStory) {
         freeOption = ""
     }
 
@@ -67,24 +67,40 @@ fun Adventure(pickedTheme: String) {
                 scope.launch {
                     storyLine.add(Message(role = "user", content = option.toString()))
                     currentStory = postChatCompletion(storyLine)
-                    storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
+                    storyLine.add(
+                        Message(
+                            role = "assistant",
+                            content = currentStory.scenario.toString()
+                        )
+                    )
                 }
             }
         }
         item {
             LocalSpacer()
-            AdventureTextField(
-                value = freeOption,
-                label = "Choose your own path",
-                onValueChange = { freeOption = it },
-                onSend = {
-                    scope.launch {
-                        storyLine.add(Message(role = "user", content = freeOption))
-                        currentStory = postChatCompletion(storyLine)
-                        storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
-                    }
+            if (currentStory.scenario.tag == "death" || currentStory.scenario.tag == "victory") {
+                AdventureButton(text = "Restart") {
+                    onRestart("")
                 }
-            )
+            } else {
+                AdventureTextField(
+                    value = freeOption,
+                    label = "Choose your own path",
+                    onValueChange = { freeOption = it },
+                    onSend = {
+                        scope.launch {
+                            storyLine.add(Message(role = "user", content = freeOption))
+                            currentStory = postChatCompletion(storyLine)
+                            storyLine.add(
+                                Message(
+                                    role = "assistant",
+                                    content = currentStory.scenario.toString()
+                                )
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }

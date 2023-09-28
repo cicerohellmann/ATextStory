@@ -24,7 +24,9 @@ class MainActivity : ComponentActivity() {
                     pickedTheme = it
                 }
 
-                else -> Adventure(pickedTheme)
+                else -> Adventure(pickedTheme){
+                    pickedTheme = it
+                }
             }
         }
     }
