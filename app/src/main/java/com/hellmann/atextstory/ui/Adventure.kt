@@ -74,6 +74,7 @@ fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
                 }
             }
         }
+
         item {
             LocalSpacer()
             AdventureTextField(

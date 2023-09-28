@@ -26,7 +26,7 @@ suspend fun postChatCompletion(messages: List<Message>): ScenarioData {
     val decodedResponse: Message?
     val decodedJson: OpenAIResponse = json.decodeFromString<OpenAIResponse>(response.body())
 
-//    TODO(Review the JSON validation)
+
     return if (decodedJson.choices.first().message.content.isValidJson()) {
         decodedResponse = decodedJson.choices.first().message
         val cleanedJson = decodedResponse.content.replace(toJSONCleaner, "")
