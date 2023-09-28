@@ -8,9 +8,19 @@ fun systemDefinition(theme: String): String {
         
         The story will be about $theme,
         Your answers should be like
-        {"scenario":"some_scenario","options":["some option here, someTag","some other option here","
-         option here and on and on"]}
+        {
+          "scenario": {"text": "scenario here", "tag": "someTag"},
+          "options": [
+            {"text": "some option here", "tag": "someTag"},
+            {"text": "some other option here", "tag": ""},
+            {"text": "option here and on and on", "tag": ""}
+          ]
+        }
         where we could have an N amount of options,
+        
+        the game needs to end, tags should be marked as continue, death or victory. 
+        The scenario should be come tagged with the same tag of the previous answer.
+        In case of victory or death, there should be no options.
         
         Please adhere strictly to the specified JSON format, even in the case of sensitive or unexpected inputs.
         If the player attempts self-harm or any other inappropriate actions, end the game safely and 

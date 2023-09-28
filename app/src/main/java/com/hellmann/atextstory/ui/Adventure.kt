@@ -15,6 +15,7 @@ import com.hellmann.atextstory.client.postChatCompletion
 import com.hellmann.atextstory.client.initialUserMessage
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
+import com.hellmann.atextstory.data.Option
 import com.hellmann.atextstory.data.ScenarioData
 import com.hellmann.atextstory.ui.theme.AdventureButton
 import com.hellmann.atextstory.ui.theme.AdventureLazyColumn
@@ -36,7 +37,7 @@ fun Adventure(pickedTheme: String) {
     var currentStory by remember {
         mutableStateOf(
             ScenarioData(
-                scenario = "Your story is coming",
+                scenario = Option("Your story is coming", "beginning"),
                 options = listOf()
             )
         )
@@ -49,7 +50,7 @@ fun Adventure(pickedTheme: String) {
     LaunchedEffect(key1 = Unit) {
         scope.launch {
             currentStory = postChatCompletion(storyLine)
-            storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+            storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
         }
     }
 
@@ -58,15 +59,15 @@ fun Adventure(pickedTheme: String) {
     ) {
 
         item {
-            AdventureText(currentStory.scenario)
+            AdventureText(currentStory.scenario.text)
         }
         items(currentStory.options) { option ->
             LocalSpacer()
-            AdventureButton(text = option) {
+            AdventureButton(text = option.text) {
                 scope.launch {
-                    storyLine.add(Message(role = "user", content = option))
+                    storyLine.add(Message(role = "user", content = option.toString()))
                     currentStory = postChatCompletion(storyLine)
-                    storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+                    storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
                 }
             }
         }
@@ -80,7 +81,7 @@ fun Adventure(pickedTheme: String) {
                     scope.launch {
                         storyLine.add(Message(role = "user", content = freeOption))
                         currentStory = postChatCompletion(storyLine)
-                        storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+                        storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
                     }
                 }
             )
