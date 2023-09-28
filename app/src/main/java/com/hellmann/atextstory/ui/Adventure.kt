@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun Adventure(pickedTheme: String) {
+fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
     val scope = rememberCoroutineScope()
 
     val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
@@ -48,7 +48,9 @@ fun Adventure(pickedTheme: String) {
 
     LaunchedEffect(key1 = Unit) {
         scope.launch {
+            onRequest(true)
             currentStory = postChatCompletion(storyLine)
+            onRequest(false)
             storyLine.add(Message(role = "assistant", content = currentStory.scenario))
         }
     }
@@ -65,7 +67,9 @@ fun Adventure(pickedTheme: String) {
             AdventureButton(text = option) {
                 scope.launch {
                     storyLine.add(Message(role = "user", content = option))
+                    onRequest(true)
                     currentStory = postChatCompletion(storyLine)
+                    onRequest(false)
                     storyLine.add(Message(role = "assistant", content = currentStory.scenario))
                 }
             }
@@ -79,8 +83,10 @@ fun Adventure(pickedTheme: String) {
                 onSend = {
                     scope.launch {
                         storyLine.add(Message(role = "user", content = freeOption))
+                        onRequest(true)
                         currentStory = postChatCompletion(storyLine)
                         storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+                        onRequest(false)
                     }
                 }
             )
