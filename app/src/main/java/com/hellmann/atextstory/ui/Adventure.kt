@@ -15,6 +15,7 @@ import com.hellmann.atextstory.client.initialUserMessage
 import com.hellmann.atextstory.client.postChatCompletion
 import com.hellmann.atextstory.client.roleMessage
 import com.hellmann.atextstory.data.Message
+import com.hellmann.atextstory.data.Option
 import com.hellmann.atextstory.data.ScenarioData
 import com.hellmann.atextstory.ui.theme.AdventureButton
 import com.hellmann.atextstory.ui.theme.AdventureLazyColumn
@@ -27,7 +28,11 @@ import kotlinx.coroutines.launch
 
 @ExperimentalMaterial3Api
 @Composable
-fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
+fun Adventure(
+    pickedTheme: String,
+    onRequest: (Boolean) -> Unit,
+    onRestart: (String) -> Unit
+) {
     val scope = rememberCoroutineScope()
 
     val storyLine = remember { mutableStateListOf(roleMessage(pickedTheme), initialUserMessage) }
@@ -36,13 +41,13 @@ fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
     var currentStory by remember {
         mutableStateOf(
             ScenarioData(
-                scenario = "Your story is coming",
+                scenario = Option("Your story is coming", "beginning"),
                 options = listOf()
             )
         )
     }
 
-    LaunchedEffect(currentStory){
+    LaunchedEffect(currentStory) {
         freeOption = ""
     }
 
@@ -51,7 +56,7 @@ fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
             onRequest(true)
             currentStory = postChatCompletion(storyLine)
             onRequest(false)
-            storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+            storyLine.add(Message(role = "assistant", content = currentStory.scenario.toString()))
         }
     }
 
@@ -60,37 +65,51 @@ fun Adventure(pickedTheme: String, onRequest: (Boolean) -> Unit) {
     ) {
 
         item {
-            AdventureText(currentStory.scenario)
+            AdventureText(currentStory.scenario.text)
         }
         items(currentStory.options) { option ->
             LocalSpacer()
-            AdventureButton(text = option) {
+            AdventureButton(text = option.text) {
                 scope.launch {
-                    storyLine.add(Message(role = "user", content = option))
+                    storyLine.add(Message(role = "user", content = option.toString()))
                     onRequest(true)
                     currentStory = postChatCompletion(storyLine)
                     onRequest(false)
-                    storyLine.add(Message(role = "assistant", content = currentStory.scenario))
+                    storyLine.add(
+                        Message(
+                            role = "assistant",
+                            content = currentStory.scenario.toString()
+                        )
+                    )
                 }
             }
         }
 
         item {
             LocalSpacer()
-            AdventureTextField(
-                value = freeOption,
-                label = "Choose your own path",
-                onValueChange = { freeOption = it },
-                onSend = {
-                    scope.launch {
-                        storyLine.add(Message(role = "user", content = freeOption))
-                        onRequest(true)
-                        currentStory = postChatCompletion(storyLine)
-                        storyLine.add(Message(role = "assistant", content = currentStory.scenario))
-                        onRequest(false)
-                    }
+            if (currentStory.scenario.tag == "death" || currentStory.scenario.tag == "victory") {
+                AdventureButton(text = "Restart") {
+                    onRestart("")
                 }
-            )
+            } else {
+                AdventureTextField(
+                    value = freeOption,
+                    label = "Choose your own path",
+                    onValueChange = { freeOption = it },
+                    onSend = {
+                        scope.launch {
+                            storyLine.add(Message(role = "user", content = freeOption))
+                            currentStory = postChatCompletion(storyLine)
+                            storyLine.add(
+                                Message(
+                                    role = "assistant",
+                                    content = currentStory.scenario.toString()
+                                )
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }

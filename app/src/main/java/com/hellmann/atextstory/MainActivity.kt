@@ -30,9 +30,11 @@ class MainActivity : ComponentActivity() {
                         pickedTheme = it
                     }
 
-                    else -> Adventure(pickedTheme){
+                    else -> Adventure(pickedTheme = pickedTheme, onRequest = {
                         isRequesting = it
-                    }
+                    }, onRestart = {
+                        pickedTheme = ""
+                    })
                 }
                 if (isRequesting)
                     LoadingAnimation()

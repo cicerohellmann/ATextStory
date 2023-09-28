@@ -4,6 +4,12 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ScenarioData(
-    val scenario: String,
-    val options: List<String>
+    val scenario: Option,
+    val options: List<Option>
+)
+
+@Serializable
+data class Option(
+    val text: String,
+    val tag: String
 )
