@@ -10,7 +10,6 @@ val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
 val apiKey = properties.getProperty("apiKey") ?: "defaultApiKey"
-//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
 
 android {
     namespace = "com.hellmann.atextstory"
