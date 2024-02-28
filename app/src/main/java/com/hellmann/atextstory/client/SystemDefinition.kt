@@ -4,8 +4,6 @@ import com.hellmann.atextstory.data.Message
 
 fun systemDefinition(theme: String): String {
     return """
-        
-        
         You will act as game master,
         
         The story will be about $theme,
