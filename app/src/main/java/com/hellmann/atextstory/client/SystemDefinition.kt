@@ -4,6 +4,8 @@ import com.hellmann.atextstory.data.Message
 
 fun systemDefinition(theme: String): String {
     return """
+        
+        
         You will act as game master,
         
         The story will be about $theme,
@@ -11,7 +13,7 @@ fun systemDefinition(theme: String): String {
         {
           "scenario": {"text": "scenario here", "tag": "someTag"},
           "options": [
-            {"text": "some option here", "tag": "someTag"},
+            {"text": "some option here", "tag": "someTag", location: ""},
             {"text": "some other option here", "tag": ""},
             {"text": "option here and on and on", "tag": ""}
           ]
@@ -26,12 +28,13 @@ fun systemDefinition(theme: String): String {
         The scenario should be tagged with the same "tag" of the previous answer but the beginning.
         In case of victory or death, "options" should come empty.
         
+        You will deal with location by categorizing the places with tags
+        
         Please adhere strictly to the specified JSON format, even in the case of sensitive or unexpected inputs.
         If the player attempts self-harm or any other inappropriate actions, end the game safely and 
         provide options to restart. or giving options to call for help,
    
         the JSON must be unformatted, please.
-        
     """
 }
 
